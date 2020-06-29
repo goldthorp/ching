@@ -17,23 +17,23 @@ public class ViewEntryFragment extends Fragment {
   @Nullable
   @Override
   public View onCreateView(
-    @NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-    @Nullable Bundle savedInstanceState) {
-    View root = inflater.inflate(R.layout.fragment_view_entry, container, false);
+    @NonNull final LayoutInflater inflater, @Nullable final ViewGroup container,
+    @Nullable final Bundle savedInstanceState) {
+    final View root = inflater.inflate(R.layout.fragment_view_entry, container, false);
 
-    ViewEntryFragmentArgs args = ViewEntryFragmentArgs.fromBundle(requireArguments());
-    Entry entry = args.getEntry();
+    final ViewEntryFragmentArgs args = ViewEntryFragmentArgs.fromBundle(requireArguments());
+    final Entry entry = args.getEntry();
 
-    TextView beforeTextTextView = root.findViewById(R.id.before_text_text_view);
+    final TextView beforeTextTextView = root.findViewById(R.id.before_text_text_view);
     beforeTextTextView.setText(entry.getBeforeText());
 
-    HexagramsView hexagramsView = root.findViewById(R.id.hexagrams_view);
+    final HexagramsView hexagramsView = root.findViewById(R.id.hexagrams_view);
     hexagramsView.addFirstHexagram(entry.getHexagram());
     if (entry.getSecondHexagram() != null) {
       hexagramsView.addSecondHexagram(entry.getSecondHexagram());
     }
 
-    TextView afterTextTextView = root.findViewById(R.id.after_text_text_view);
+    final TextView afterTextTextView = root.findViewById(R.id.after_text_text_view);
     afterTextTextView.setText(entry.getAfterText());
 
     return root;

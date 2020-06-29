@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Ching</string>
+    <string name="save">Save</string>
+    <string name="enter_hexagrams">Enter Hexagram(s)</string>
+    <string name="submit">Submit</string>
+    <string name="add_hexagrams">Add Hexagram(s)</string>
+    <string name="first_hexagram_number">First hexagram number</string>
+    <string name="second_hexagram_number">Second hexagram number</string>
 </resources>

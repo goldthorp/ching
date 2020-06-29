@@ -12,13 +12,12 @@
         android:id="@+id/before_text_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapSentences|textMultiLine"/>
+        android:inputType="textCapSentences|textMultiLine" />
 
     <Button
         android:id="@+id/add_hexagrams_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/before_text_edit_text"
-        android:text="add hexagram(s)"/>
-
+        android:text="@string/add_hexagrams" />
 </LinearLayout>

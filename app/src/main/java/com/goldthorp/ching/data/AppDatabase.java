@@ -16,10 +16,10 @@ public abstract class AppDatabase extends RoomDatabase {
   public abstract EntryDao getEntryDao();
 
   public static synchronized AppDatabase getInstance(final Context context) {
-    String dbName = "ching.db";
+    final String dbName = "ching.db";
     if (INSTANCE == null) {
       INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, dbName)
-          .build();
+        .build();
     }
     return INSTANCE;
   }
