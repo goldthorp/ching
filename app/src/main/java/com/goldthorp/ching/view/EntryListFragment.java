@@ -44,6 +44,7 @@ public class EntryListFragment extends Fragment {
     final EntryDao entryDao = AppDatabase.getInstance(requireContext()).getEntryDao();
     entryDao.getAll().observe(getViewLifecycleOwner(), entries -> {
       // Add entries to list to be referenced on item click
+      entryList.clear();
       entryList.addAll(entries);
       // List of dates to display in UI
       final List<String> entryDates = new ArrayList<>();
