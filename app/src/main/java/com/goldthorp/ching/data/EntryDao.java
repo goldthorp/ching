@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface EntryDao {
-  @Query("SELECT * FROM entry")
+  @Query("SELECT * FROM entry ORDER BY timestamp DESC")
   LiveData<List<Entry>> getAll();
 
   @Insert
