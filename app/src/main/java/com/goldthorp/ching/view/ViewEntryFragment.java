@@ -28,10 +28,7 @@ public class ViewEntryFragment extends Fragment {
     beforeTextTextView.setText(entry.getBeforeText());
 
     final HexagramsView hexagramsView = root.findViewById(R.id.hexagrams_view);
-    hexagramsView.addFirstHexagram(entry.getHexagram());
-    if (entry.getSecondHexagram() != null) {
-      hexagramsView.addSecondHexagram(entry.getSecondHexagram());
-    }
+    hexagramsView.setHexagrams(entry.getHexagram(), entry.getSecondHexagram());
 
     final TextView afterTextTextView = root.findViewById(R.id.after_text_text_view);
     afterTextTextView.setText(entry.getAfterText());

@@ -14,29 +14,29 @@ import com.goldthorp.ching.R;
  */
 public class HexagramsView extends LinearLayout {
 
-  /**
-   * Constructor used by tools when a HexagramsView is specified in XML.
-   *
-   * @param context context
-   * @param attrs   attributes
-   */
   public HexagramsView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
   }
 
-  /**
-   * Constructor used when dynamically adding a HexagramsView.
-   *
-   * @param context              context
-   * @param hexagramNumber       the number for the first hexagram
-   * @param secondHexagramNumber (optional) the number for the second hexagram
-   */
-  public HexagramsView(
-    final Context context, final Integer hexagramNumber, final Integer secondHexagramNumber) {
+  public HexagramsView(final Context context) {
     super(context);
     setOrientation(HORIZONTAL);
     final int layoutPaddingPx = getResources().getDimensionPixelSize(R.dimen.layout_padding);
     setPadding(layoutPaddingPx, layoutPaddingPx, layoutPaddingPx, layoutPaddingPx);
+    setLayoutParams(new LinearLayout.LayoutParams(
+      ViewGroup.LayoutParams.MATCH_PARENT,
+      getResources().getDimensionPixelSize(R.dimen.hexagrams_height)));
+  }
+
+  /**
+   * Set the hexagrams in the view.
+   *
+   * @param hexagramNumber       number for first hexagram
+   * @param secondHexagramNumber (optional) number for second hexagram
+   */
+  public void setHexagrams(final Integer hexagramNumber, final Integer secondHexagramNumber) {
+    // Remove all views in case we are changing the hexagrams that have already been added
+    removeAllViews();
 
     addFirstHexagram(hexagramNumber);
 
@@ -50,7 +50,7 @@ public class HexagramsView extends LinearLayout {
    *
    * @param hexagramNumber number of hexagram to add
    */
-  public void addFirstHexagram(final int hexagramNumber) {
+  private void addFirstHexagram(final int hexagramNumber) {
     final HexagramView hexagram1 = new HexagramView(getContext(), hexagramNumber);
     final LayoutParams hex1Params =
       new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 5);
@@ -63,7 +63,7 @@ public class HexagramsView extends LinearLayout {
    *
    * @param hexagramNumber number of second hexagram to add
    */
-  public void addSecondHexagram(final int hexagramNumber) {
+  private void addSecondHexagram(final int hexagramNumber) {
     final ImageView arrow = new ImageView(getContext());
     arrow.setImageResource(R.drawable.next);
     final LayoutParams arrowParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2);
