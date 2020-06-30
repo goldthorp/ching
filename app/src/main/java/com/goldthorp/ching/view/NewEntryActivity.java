@@ -60,6 +60,7 @@ public class NewEntryActivity extends AppCompatActivity {
 
     // The entry to save
     entry = new Entry();
+    entry.setTimestamp(System.currentTimeMillis());
 
     hexagramsView = new HexagramsView(this);
 
@@ -99,7 +100,6 @@ public class NewEntryActivity extends AppCompatActivity {
     // Save entry on save click then kill the activity
     final EntryDao entryDao = AppDatabase.getInstance(this).getEntryDao();
     saveButton.setOnClickListener(v -> {
-      entry.setTimestamp(System.currentTimeMillis());
       entry.setBeforeText(beforeTextEditText.getText().toString());
       entry.setAfterText(afterTextEditText.getText().toString());
       final ExecutorService executor = Executors.newSingleThreadExecutor();
