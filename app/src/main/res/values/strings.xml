@@ -6,4 +6,6 @@
     <string name="add_hexagrams">Add Hexagram(s)</string>
     <string name="first_hexagram_number">First hexagram number</string>
     <string name="second_hexagram_number">Second hexagram number</string>
+    <string name="confirm_discard_title">Discard Changes</string>
+    <string name="confirm_discard_message">Are you sure you want discard this entry?</string>
 </resources>

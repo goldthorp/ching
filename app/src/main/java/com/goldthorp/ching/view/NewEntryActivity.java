@@ -125,4 +125,15 @@ public class NewEntryActivity extends AppCompatActivity {
     }
     hexagramsView.setHexagrams(entry.getHexagram(), entry.getSecondHexagram());
   }
+
+  // Display a confirm dialog before exiting on back-press
+  @Override
+  public void onBackPressed() {
+    new AlertDialog.Builder(this)
+      .setTitle(getString(R.string.confirm_discard_title))
+      .setMessage(getString(R.string.confirm_discard_message))
+      .setPositiveButton("Yes", (dialog, which) -> finish())
+      .setNegativeButton("No", null)
+      .show();
+  }
 }
