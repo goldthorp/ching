@@ -1,6 +1,7 @@
 package com.goldthorp.ching.view;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,8 +44,18 @@ public class NewEntryActivity extends AppCompatActivity {
     final LayoutInflater inflater = getLayoutInflater();
     final LinearLayout dialogLayout = new LinearLayout(this);
     inflater.inflate(R.layout.dialog_add_hexagrams, dialogLayout);
-    final EditText hexagramEditText = dialogLayout.findViewById(R.id.first_hexagram_number_edit_text);
-    final EditText secondHexagramEditText = dialogLayout.findViewById(R.id.second_hexagram_number_edit_text);
+
+    // Input for the first hexagram
+    final EditText hexagramEditText =
+      dialogLayout.findViewById(R.id.first_hexagram_number_edit_text);
+    // Enforce range validation
+    hexagramEditText.setFilters(new InputFilter[]{new HexagramInputFilter(this)});
+
+    // Input for the second hexagram
+    final EditText secondHexagramEditText =
+      dialogLayout.findViewById(R.id.second_hexagram_number_edit_text);
+    // Enforce range validation
+    secondHexagramEditText.setFilters(new InputFilter[]{new HexagramInputFilter(this)});
 
     // Input for text after adding hexagrams (gets added after hexagrams are added)
     final EditText afterTextEditText = new EditText(this);
@@ -71,7 +83,31 @@ public class NewEntryActivity extends AppCompatActivity {
     final AlertDialog setHexagramsDialog = new AlertDialog.Builder(this)
       .setTitle(getString(R.string.enter_hexagrams))
       .setView(dialogLayout)
-      .setPositiveButton(getString(R.string.submit), ((dialog, which) -> {
+      // Set listener to null; we will override on show so that we control whether the dialog hides
+      .setPositiveButton(getString(R.string.submit), null)
+      .create();
+
+    setHexagramsDialog.setOnShowListener(dialog -> {
+      final Button submitButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+      submitButton.setOnClickListener(v -> {
+        // Validate the input
+        final String firstHexagramInput = hexagramEditText.getText().toString();
+        final String secondHexagramInput = secondHexagramEditText.getText().toString();
+        if (StringUtils.isBlank(firstHexagramInput)) {
+          // Invalid input - first hexagram must be specified
+          Toast.makeText(this, this.getString(R.string.hexagram_input_blank_error),
+            Toast.LENGTH_SHORT).show();
+          // Dialog stays open
+          return;
+        }
+        if (StringUtils.equals(firstHexagramInput, secondHexagramInput)) {
+          // Invalid input - first hexagram must be different from second
+          Toast.makeText(this, this.getString(R.string.hexagram_input_unique_error),
+            Toast.LENGTH_SHORT).show();
+          // Dialog stays open
+          return;
+        }
+
         // Set hexagrams on entry and in hexagramView
         setHexagrams(hexagramEditText.getText().toString(),
           secondHexagramEditText.getText().toString());
@@ -86,7 +122,10 @@ public class NewEntryActivity extends AppCompatActivity {
           layout.addView(afterTextEditText);
           layout.addView(saveButton);
         }
-      })).create();
+        // Close dialog
+        dialog.dismiss();
+      });
+    });
 
     // Add hexagrams click listener
     addHexagramsButton.setOnClickListener(v -> setHexagramsDialog.show());

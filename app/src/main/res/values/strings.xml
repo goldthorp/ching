@@ -8,4 +8,7 @@
     <string name="second_hexagram_number">Second hexagram number</string>
     <string name="confirm_discard_title">Discard Changes</string>
     <string name="confirm_discard_message">Are you sure you want discard this entry?</string>
+    <string name="hexagram_input_range_error">You must enter an integer in the range [1, 64].</string>
+    <string name="hexagram_input_blank_error">First hexagram must be specified.</string>
+    <string name="hexagram_input_unique_error">First hexagram must be different from second hexagram.</string>
 </resources>
