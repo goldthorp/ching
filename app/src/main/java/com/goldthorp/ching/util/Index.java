@@ -1,20 +1,28 @@
 package com.goldthorp.ching.util;
 
+import android.util.Pair;
+
+import com.goldthorp.ching.model.Hexagram;
+
 public class Index {
-  public static boolean[] getHexagram(int number) {
-    boolean[] topTrigram = HEXAGRAMS[number - 1][0];
-    boolean[] bottomTrigram = HEXAGRAMS[number - 1][1];
-    return new boolean[]{
-      bottomTrigram[0],
-      bottomTrigram[1],
-      bottomTrigram[2],
-      topTrigram[0],
-      topTrigram[1],
-      topTrigram[2],
-    };
+  public static Pair<Hexagram, Hexagram> getHexagrams(
+    final Integer firstHexagramNumber, final Integer secondHexagramNumber) {
+    final Hexagram firstHexagram =
+      new Hexagram(HEXAGRAMS[firstHexagramNumber - 1][0], HEXAGRAMS[firstHexagramNumber - 1][1]);
+    if (secondHexagramNumber == null) {
+      return Pair.create(firstHexagram, null);
+    }
+    final Hexagram secondHexagram =
+      new Hexagram(HEXAGRAMS[secondHexagramNumber - 1][0], HEXAGRAMS[secondHexagramNumber - 1][1]);
+    for (int i = 0; i < firstHexagram.getLines().length; i++) {
+      final Hexagram.Line hex1Line = firstHexagram.getLines()[i];
+      final Hexagram.Line hex2Line = secondHexagram.getLines()[i];
+      firstHexagram.getLines()[i].setChanging(hex1Line.isLight() != hex2Line.isLight());
+    }
+    return Pair.create(firstHexagram, secondHexagram);
   }
 
-  final private static boolean[][][] HEXAGRAMS =  {
+  final private static boolean[][][] HEXAGRAMS = {
     {
       Trigrams.HEAVEN,
       Trigrams.HEAVEN
@@ -273,7 +281,7 @@ public class Index {
     },
   };
 
-   private static class Trigrams {
+  private static class Trigrams {
     final static boolean[] HEAVEN = {true, true, true};
     final static boolean[] THUNDER = {true, false, false};
     final static boolean[] WATER = {false, true, false};

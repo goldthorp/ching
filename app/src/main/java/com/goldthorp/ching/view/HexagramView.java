@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.goldthorp.ching.R;
-import com.goldthorp.ching.util.Index;
+import com.goldthorp.ching.model.Hexagram;
 
 /**
  * Represents a view for a single hexagram.
@@ -17,20 +17,19 @@ public class HexagramView extends LinearLayout {
     setOrientation(VERTICAL);
   }
 
-  public HexagramView(final Context context, final int hexagramNumber) {
+  public HexagramView(final Context context, final Hexagram hexagram) {
     this(context);
-    // Find the hexagram by its number in the index
-    final boolean[] hexagram = Index.getHexagram(hexagramNumber);
     // Add the lines to the view for each lines in the hexagram
     // These are added from the bottom up
-    for (int i = 0; i < hexagram.length; i++) {
+    for (int i = 0; i < hexagram.getLines().length; i++) {
       final LayoutParams lineParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1);
       // Add bottom margin to every line except the bottom one
       if (i != 0) {
         lineParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.line_padding);
       }
+      final Hexagram.Line line = hexagram.getLines()[i];
       // Pass 0 for index since we're adding lines from the bottom up
-      addView(new LineView(context, lineParams, hexagram[i]), 0);
+      addView(new LineView(context, lineParams, line.isLight(), line.isChanging()), 0);
     }
   }
 }
