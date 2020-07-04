@@ -8,7 +8,9 @@ public class Hexagram {
   @Getter
   private final Line[] lines;
 
-  public Hexagram(final boolean[] lowerTrigram, final boolean[] upperTrigram) {
+  public Hexagram(final boolean[][] hexagram) {
+    final boolean[] upperTrigram = hexagram[0];
+    final boolean[] lowerTrigram = hexagram[1];
     lines = new Line[6];
     lines[0] = new Line(lowerTrigram[0]);
     lines[1] = new Line(lowerTrigram[1]);
