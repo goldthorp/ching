@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/entry_list_fragment"
         android:name="com.goldthorp.ching.view.EntryListFragment"
-        android:label="EntryListFragment" >
+        android:label="@string/entries_label">
         <action
             android:id="@+id/action_entry_list_fragment_to_view_entry_fragment"
             app:destination="@id/view_entry_fragment" />
@@ -16,11 +16,15 @@
     <fragment
         android:id="@+id/view_entry_fragment"
         android:name="com.goldthorp.ching.view.ViewEntryFragment"
-        android:label="fragment_view_entry"
-        tools:layout="@layout/fragment_view_entry" >
+        android:label="{date}"
+        tools:layout="@layout/fragment_view_entry">
         <argument
             android:name="entry"
             app:argType="com.goldthorp.ching.model.Entry"
-            app:nullable="false"/>
+            app:nullable="false" />
+        <argument
+            android:name="date"
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
 </navigation>
