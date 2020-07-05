@@ -20,16 +20,16 @@ public class HexagramsView extends LinearLayout {
 
   public HexagramsView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
-  }
-
-  public HexagramsView(final Context context) {
-    super(context);
     setOrientation(HORIZONTAL);
     final int layoutPaddingPx = getResources().getDimensionPixelSize(R.dimen.layout_padding);
     setPadding(layoutPaddingPx, layoutPaddingPx, layoutPaddingPx, layoutPaddingPx);
     setLayoutParams(new LinearLayout.LayoutParams(
       ViewGroup.LayoutParams.MATCH_PARENT,
       getResources().getDimensionPixelSize(R.dimen.hexagrams_height)));
+  }
+
+  public HexagramsView(final Context context) {
+    super(context, null);
   }
 
   /**
