@@ -29,7 +29,7 @@ public class HexagramsView extends LinearLayout {
   }
 
   public HexagramsView(final Context context) {
-    super(context, null);
+    this(context, null);
   }
 
   /**
