@@ -3,6 +3,7 @@ package com.goldthorp.ching.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +44,7 @@ public class HexagramsView extends LinearLayout {
 
     final Pair<Hexagram, Hexagram> hexagrams =
       Index.getHexagrams(hexagramNumber, secondHexagramNumber);
-    addFirstHexagram(hexagrams.first);
+    addFirstHexagram(hexagrams.first, secondHexagramNumber == null);
 
     if (secondHexagramNumber != null) {
       addSecondHexagram(hexagrams.second);
@@ -53,14 +54,32 @@ public class HexagramsView extends LinearLayout {
   /**
    * Add the first hexagram to the view.
    *
-   * @param hexagram hexagram to add
+   * @param hexagram   hexagram to add
+   * @param addSpacers pass true if this is a static hexagram so that spacer views are added on
+   *                   either side to center the hexagram
    */
-  private void addFirstHexagram(final Hexagram hexagram) {
-    final HexagramView hexagram1 = new HexagramView(getContext(), hexagram);
+  private void addFirstHexagram(final Hexagram hexagram, final boolean addSpacers) {
+    // View index to add hexagram at
+    int hexagramIndex = 0;
+    if (addSpacers) {
+      // Add spacer views on either side so that the hexagram is centered and not full-screen
+      final LayoutParams spacerParams =
+        new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 3);
+      final View leftSpacer = new View(getContext());
+      leftSpacer.setLayoutParams(spacerParams);
+      final View rightSpacer = new View(getContext());
+      rightSpacer.setLayoutParams(spacerParams);
+      addView(leftSpacer);
+      addView(rightSpacer);
+      // Set index so hexagram is added between the two spacers
+      hexagramIndex = 1;
+    }
+
     final LayoutParams hex1Params =
       new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 5);
+    final HexagramView hexagram1 = new HexagramView(getContext(), hexagram);
     hexagram1.setLayoutParams(hex1Params);
-    addView(hexagram1);
+    addView(hexagram1, hexagramIndex);
   }
 
   /**
