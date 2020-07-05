@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/before_text_text_view"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="10dp" />
+        android:layout_height="wrap_content">
 
-    <com.goldthorp.ching.view.HexagramsView
-        android:id="@+id/hexagrams_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        <TextView
+            android:id="@+id/before_text_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="10dp" />
 
-    <TextView
-        android:id="@+id/after_text_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:padding="10dp" />
-</LinearLayout>
+        <com.goldthorp.ching.view.HexagramsView
+            android:id="@+id/hexagrams_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/after_text_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="10dp" />
+    </LinearLayout>
+</ScrollView>
