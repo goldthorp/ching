@@ -1,35 +1,56 @@
 package com.goldthorp.ching.view;
 
 import android.content.Context;
-import android.view.ViewGroup;
+import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.goldthorp.ching.R;
 import com.goldthorp.ching.model.Hexagram;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.Getter;
 
 /**
  * Represents a view for a single hexagram.
  */
+@Getter
 public class HexagramView extends LinearLayout {
 
-  public HexagramView(final Context context) {
-    super(context);
+  private final List<LineView> lineViews;
+
+  public HexagramView(final Context context, final AttributeSet attrs) {
+    super(context, attrs);
     setOrientation(VERTICAL);
+    lineViews = new ArrayList<>();
+
+    // Fill the hexagram with blank lines (these are spacers while generating lines for a hexagram)
+    for (int i = 0; i < 6; i++) {
+      final LineView lineView = new LineView(context);
+      addLine(lineView);
+    }
   }
 
   public HexagramView(final Context context, final Hexagram hexagram) {
-    this(context);
-    // Add the lines to the view for each lines in the hexagram
+    super(context);
+    setOrientation(VERTICAL);
+    lineViews = new ArrayList<>();
+    // Add the lineViews to the view for each lineViews in the hexagram
     // These are added from the bottom up
     for (int i = 0; i < hexagram.getLines().length; i++) {
-      final LayoutParams lineParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1);
-      // Add bottom margin to every line except the bottom one
-      if (i != 0) {
-        lineParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.line_padding);
-      }
       final Hexagram.Line line = hexagram.getLines()[i];
-      // Pass 0 for index since we're adding lines from the bottom up
-      addView(new LineView(context, lineParams, line.isLight(), line.isChanging()), 0);
+      final LineView lineView = new LineView(context, line);
+      // Remove bottom margin from bottom line
+      if (i == 0) {
+        ((MarginLayoutParams) lineView.getLayoutParams()).bottomMargin = 0;
+      }
+      addLine(lineView);
     }
+  }
+
+  private void addLine(final LineView line) {
+    lineViews.add(line);
+    // Pass 0 for index since we're adding lineViews from the bottom up
+    super.addView(line, 0);
   }
 }

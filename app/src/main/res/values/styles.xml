@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="GenerateHexagramDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Use the same background color as the break in a yin line (otherwise it defaults to white) -->
+        <item name="android:background">@color/background</item>
+    </style>
+
 </resources>

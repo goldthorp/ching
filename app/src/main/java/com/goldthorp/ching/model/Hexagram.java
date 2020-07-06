@@ -20,15 +20,33 @@ public class Hexagram {
     lines[5] = new Line(upperTrigram[2]);
   }
 
+  public Hexagram() {
+    lines = new Line[6];
+  }
+
+  public boolean hasChangingLines() {
+    for (final Line line : lines) {
+      if (line.isChanging) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Getter
-  public class Line {
+  public static class Line {
     private final boolean isLight;
 
     @Setter
     private boolean isChanging;
 
-    Line(final boolean isLight) {
+    private Line(final boolean isLight) {
       this.isLight = isLight;
+    }
+
+    public Line(final boolean isLight, final boolean isChanging) {
+      this.isLight = isLight;
+      this.isChanging = isChanging;
     }
   }
 }

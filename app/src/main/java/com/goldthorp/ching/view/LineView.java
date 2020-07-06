@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.goldthorp.ching.R;
+import com.goldthorp.ching.model.Hexagram;
 
 /**
  * Represents the view for a single line in a hexagram.
@@ -38,7 +40,13 @@ public class LineView extends View {
    */
   private final Paint black;
 
-  private LineView(final Context context) {
+  /**
+   * (For generating hexagrams in the app)
+   * Blank lines are spacers to hold the place for a line that hasn't been generated yet.
+   */
+  private boolean isBlank = true;
+
+  public LineView(final Context context) {
     super(context);
 
     white = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -46,40 +54,59 @@ public class LineView extends View {
 
     black = new Paint(Paint.ANTI_ALIAS_FLAG);
     black.setColor(Color.BLACK);
+
+    final LinearLayout.LayoutParams layoutParams =
+      new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1);
+    layoutParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.line_padding);
+    setLayoutParams(layoutParams);
   }
 
   public LineView(
-    final Context context, final ViewGroup.LayoutParams layoutParams, final boolean isLight,
-    final boolean isChanging) {
+    final Context context, final Hexagram.Line line) {
     this(context);
-    this.isLight = isLight;
-    this.isChanging = isChanging;
-    setLayoutParams(layoutParams);
+    this.isLight = line.isLight();
+    this.isChanging = line.isChanging();
+    isBlank = false;
   }
 
   @Override
   protected void onDraw(final Canvas canvas) {
-    canvas.drawColor(Color.BLACK);
-    final int half = getWidth() / 2;
-    // Color of dot for changing lines
-    final Paint dotColor;
-    if (!isLight) {
-      // Add a white rectangle to the middle of the yin line to make it appear broken.
-      // The break in the line makes up 1/10 the width of the line, so make the white rectangle
-      // getWidth() / 20 from both sides of the middle.
-      final int left = half - getWidth() / 20;
-      final int right = half + getWidth() / 20;
-      canvas.drawRect(left, 0, right, getHeight(), white);
+    if (!isBlank) {
+      canvas.drawColor(Color.BLACK);
+      final int half = getWidth() / 2;
+      // Color of dot for changing lines
+      final Paint dotColor;
+      if (!isLight) {
+        // Add a white rectangle to the middle of the yin line to make it appear broken.
+        // The break in the line makes up 1/10 the width of the line, so make the white rectangle
+        // getWidth() / 20 from both sides of the middle.
+        final int left = half - getWidth() / 20;
+        final int right = half + getWidth() / 20;
+        canvas.drawRect(left, 0, right, getHeight(), white);
 
-      dotColor = black;
-    } else {
-      dotColor = white;
-    }
+        dotColor = black;
+      } else {
+        dotColor = white;
+      }
 
-    // Draw dot in the middle of changing lines
-    if (isChanging) {
-      final float radius = (getHeight() * .5f) - 7;
-      canvas.drawCircle(half, getHeight() / 2, radius, dotColor);
+      // Draw dot in the middle of changing lines
+      if (isChanging) {
+        final float radius = (getHeight() * .5f) - 7;
+        canvas.drawCircle(half, getHeight() / 2, radius, dotColor);
+      }
     }
+  }
+
+  /**
+   * Set the LineView to the given line (used on blank lines once they have been generated).
+   *
+   * @param line values to set
+   */
+  public void setLine(final Hexagram.Line line) {
+    isBlank = false;
+    this.isLight = line.isLight();
+    this.isChanging = line.isChanging();
+    // Redraw view
+    invalidate();
   }
 }

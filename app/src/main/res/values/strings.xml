@@ -3,7 +3,6 @@
     <string name="save">Save</string>
     <string name="enter_hexagrams">Enter Hexagram(s)</string>
     <string name="submit">Submit</string>
-    <string name="add_hexagrams">Add Hexagram(s)</string>
     <string name="first_hexagram_number">First hexagram number</string>
     <string name="second_hexagram_number">Second hexagram number</string>
     <string name="confirm_discard_title">Discard Changes</string>
@@ -12,4 +11,5 @@
     <string name="hexagram_input_blank_error">First hexagram must be specified.</string>
     <string name="hexagram_input_unique_error">First hexagram must be different from second hexagram.</string>
     <string name="entries_label">Entries</string>
+    <string name="throw_hexagram">Throw Hexagram</string>
 </resources>

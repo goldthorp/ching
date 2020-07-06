@@ -5,6 +5,13 @@ import android.util.Pair;
 import com.goldthorp.ching.model.Hexagram;
 
 public class Index {
+  /**
+   * Find the pair of Hexagrams corresponding to the given numbers.
+   *
+   * @param firstHexagramNumber  number of first hexagram
+   * @param secondHexagramNumber (optional) number of second hexagram
+   * @return pair of Hexagrams (second will be null if null was passed for secondHexagramNumber)
+   */
   public static Pair<Hexagram, Hexagram> getHexagrams(
     final Integer firstHexagramNumber, final Integer secondHexagramNumber) {
     final Hexagram firstHexagram = new Hexagram(HEXAGRAMS[firstHexagramNumber - 1]);
@@ -18,6 +25,55 @@ public class Index {
       firstHexagram.getLines()[i].setChanging(hex1Line.isLight() != hex2Line.isLight());
     }
     return Pair.create(firstHexagram, secondHexagram);
+  }
+
+  /**
+   * Find the numbers for the specified Hexagram and the one it changes to (if it has changing
+   * lines).
+   *
+   * @param hexagram to find number(s) of
+   * @return pair of integers for the hexagram numbers. Second integer will be null if the
+   * specified hexagram has no changing lines
+   */
+  public static Pair<Integer, Integer> reverseGetHexagrams(final Hexagram hexagram) {
+    Integer firstHexagramNumber = null;
+    Integer secondHexagramNumber = null;
+
+    for (int i = 0; i < HEXAGRAMS.length; i++) {
+      final boolean[] upper = HEXAGRAMS[i][0];
+      final boolean[] lower = HEXAGRAMS[i][1];
+      final Hexagram.Line[] lines = hexagram.getLines();
+      if (lines[0].isLight() == lower[0] &&
+        lines[1].isLight() == lower[1] &&
+        lines[2].isLight() == lower[2] &&
+        lines[3].isLight() == upper[0] &&
+        lines[4].isLight() == upper[1] &&
+        lines[5].isLight() == upper[2]) {
+        firstHexagramNumber = i + 1;
+        break;
+      }
+    }
+
+    // Find the second hexagram if the first one has changing lines
+    if (hexagram.hasChangingLines()) {
+      for (int i = 0; i < HEXAGRAMS.length; i++) {
+        final boolean[] upper = HEXAGRAMS[i][0];
+        final boolean[] lower = HEXAGRAMS[i][1];
+        final Hexagram.Line[] lines = hexagram.getLines();
+        // Use XOR to 'flip' the value of the line in the original hexagram if it is changing
+        if ((lines[0].isLight() ^ lines[0].isChanging()) == lower[0] &&
+          (lines[1].isLight() ^ lines[1].isChanging()) == lower[1] &&
+          (lines[2].isLight() ^ lines[2].isChanging()) == lower[2] &&
+          (lines[3].isLight() ^ lines[3].isChanging()) == upper[0] &&
+          (lines[4].isLight() ^ lines[4].isChanging()) == upper[1] &&
+          (lines[5].isLight() ^ lines[5].isChanging()) == upper[2]) {
+          secondHexagramNumber = i + 1;
+          break;
+        }
+      }
+    }
+
+    return Pair.create(firstHexagramNumber, secondHexagramNumber);
   }
 
   final private static boolean[][][] HEXAGRAMS = {
