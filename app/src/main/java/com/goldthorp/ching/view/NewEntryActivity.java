@@ -241,7 +241,8 @@ public class NewEntryActivity extends AppCompatActivity {
   private void setHexagrams(
     final String hexagramNumberString, final String secondHexagramNumberString) {
     setHexagrams(Integer.valueOf(hexagramNumberString),
-      secondHexagramNumberString != null ? Integer.valueOf(secondHexagramNumberString) : null);
+      StringUtils.isNotBlank(secondHexagramNumberString) ?
+        Integer.valueOf(secondHexagramNumberString) : null);
   }
 
   /**
