@@ -1,5 +1,6 @@
 package com.goldthorp.ching.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -7,6 +8,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -38,6 +40,7 @@ public class NewEntryActivity extends AppCompatActivity {
 
   private LinearLayout layout;
   private RelativeLayout buttonsLayout;
+  private EditText beforeTextEditText;
   private EditText afterTextEditText;
   private HexagramsView hexagramsView;
   private Button saveButton;
@@ -51,7 +54,7 @@ public class NewEntryActivity extends AppCompatActivity {
     buttonsLayout = findViewById(R.id.buttons_layout);
 
     // Input for text before adding hexagrams
-    final EditText beforeTextEditText = findViewById(R.id.before_text_edit_text);
+    beforeTextEditText = findViewById(R.id.before_text_edit_text);
 
     // Input for text after adding hexagrams (gets added after hexagrams are added)
     afterTextEditText = new EditText(this);
@@ -152,6 +155,12 @@ public class NewEntryActivity extends AppCompatActivity {
       });
     });
 
+    setHexagramsDialog.setOnDismissListener(v -> {
+      beforeTextEditText.clearFocus();
+      layout.requestFocus();
+      hideKeyboard();
+    });
+
     // Button to show the dialog
     final Button addHexagramsButton = findViewById(R.id.add_hexagrams_button);
     addHexagramsButton.setOnClickListener(v -> setHexagramsDialog.show());
@@ -214,6 +223,7 @@ public class NewEntryActivity extends AppCompatActivity {
 
     final Button generateHexagramButton = findViewById(R.id.generate_hexagram_button);
     generateHexagramButton.setOnClickListener(v -> {
+      hideKeyboard();
       generateHexagramDialog.show();
       // While the dialog is showing, update lineValue to a new random value every 20ms
       final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -279,5 +289,14 @@ public class NewEntryActivity extends AppCompatActivity {
       .setPositiveButton("Yes", (dialog, which) -> finish())
       .setNegativeButton("No", null)
       .show();
+  }
+
+  /**
+   * Hides the software keyboard.
+   */
+  private void hideKeyboard() {
+    final InputMethodManager imm =
+      (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
   }
 }
