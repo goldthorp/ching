@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -79,14 +80,26 @@ public class NewEntryActivity extends AppCompatActivity {
     setUpGenerateHexagram();
 
     // Save entry on save click then kill the activity
+    saveButton.setOnClickListener(v -> saveEntry());
+  }
+
+  // If the system is killing the app for memory and a hexagram has
+  // already been added, just save the entry and kill the activity
+  @Override
+  protected void onSaveInstanceState(@NonNull final Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (entry.getHexagram() != null) {
+      saveEntry();
+    }
+  }
+
+  private void saveEntry() {
     final EntryDao entryDao = AppDatabase.getInstance(this).getEntryDao();
-    saveButton.setOnClickListener(v -> {
-      entry.setBeforeText(beforeTextEditText.getText().toString());
-      entry.setAfterText(afterTextEditText.getText().toString());
-      final ExecutorService executor = Executors.newSingleThreadExecutor();
-      executor.execute(() -> entryDao.insert(entry));
-      finish();
-    });
+    entry.setBeforeText(beforeTextEditText.getText().toString());
+    entry.setAfterText(afterTextEditText.getText().toString());
+    final ExecutorService executor = Executors.newSingleThreadExecutor();
+    executor.execute(() -> entryDao.insert(entry));
+    finish();
   }
 
   /**
