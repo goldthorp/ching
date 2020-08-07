@@ -68,7 +68,7 @@ public class EntryListFragment extends Fragment {
     entryListView.setOnItemClickListener((parent, view, position, id) -> {
       final Entry entry = entryList.get(position);
       final EntryListFragmentDirections.ActionEntryListFragmentToViewEntryFragment action =
-        EntryListFragmentDirections.actionEntryListFragmentToViewEntryFragment(entry,
+        EntryListFragmentDirections.actionEntryListFragmentToViewEntryFragment(entry.getId(),
           sdf.format(entry.getTimestamp()));
       Navigation.findNavController(root).navigate(action);
     });

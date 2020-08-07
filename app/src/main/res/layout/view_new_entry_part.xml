@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/new_entry_part_layout">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapSentences|textMultiLine"
+        android:id="@+id/new_entry_part_edit_text" />
+
+    <com.goldthorp.ching.view.HexagramsView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/new_entry_part_hexagrams" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/plus"
+        android:paddingTop="15dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:id="@+id/new_entry_part_add_hexagrams" />
+
+</LinearLayout>

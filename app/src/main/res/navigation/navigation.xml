@@ -19,8 +19,8 @@
         android:label="{date}"
         tools:layout="@layout/fragment_view_entry">
         <argument
-            android:name="entry"
-            app:argType="com.goldthorp.ching.model.Entry"
+            android:name="entryId"
+            app:argType="long"
             app:nullable="false" />
         <argument
             android:name="date"

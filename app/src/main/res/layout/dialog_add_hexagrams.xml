@@ -2,19 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
-    <EditText
-        android:id="@+id/first_hexagram_number_edit_text"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="@string/first_hexagram_number" />
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/enter_hexagrams"
+        android:textColor="@color/font_grey"
+        android:id="@+id/add_hexagrams_dialog_enter" />
 
-    <EditText
-        android:id="@+id/second_hexagram_number_edit_text"
+    <View
+        android:id="@+id/button_border"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginBottom="4dip"
+        android:layout_marginTop="4dip"
+        android:background="@color/border_grey" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="@string/second_hexagram_number" />
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/throw_hexagram"
+        android:textColor="@color/font_grey"
+        android:id="@+id/add_hexagrams_dialog_throw" />
 </LinearLayout>

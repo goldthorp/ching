@@ -12,4 +12,5 @@
     <string name="hexagram_input_unique_error">First hexagram must be different from second hexagram.</string>
     <string name="entries_label">Entries</string>
     <string name="throw_hexagram">Throw Hexagram</string>
+    <string name="add_a_cast">Add a Cast</string>
 </resources>

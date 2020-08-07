@@ -6,14 +6,30 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.goldthorp.ching.model.Entry;
+import com.goldthorp.ching.model.EntryPart;
 
 import java.util.List;
 
 @Dao
-public interface EntryDao {
+public abstract class EntryDao {
+
+  private final EntryPartDao entryPartDao;
+
+  EntryDao(final AppDatabase appDatabase) {
+    entryPartDao = appDatabase.getEntryPartDao();
+  }
+
   @Query("SELECT * FROM entry ORDER BY timestamp DESC")
-  LiveData<List<Entry>> getAll();
+  public abstract LiveData<List<Entry>> getAll();
 
   @Insert
-  void insert(Entry entry);
+  public abstract long insert(Entry entry);
+
+  public void insertWithParts(final Entry entry) {
+    final long entryId = insert(entry);
+    for (final EntryPart part : entry.getParts()) {
+      part.setEntryId(entryId);
+      entryPartDao.insert(part);
+    }
+  }
 }
