@@ -49,14 +49,40 @@ public class NewEntryActivity extends AppCompatActivity {
     saveButton.setOnClickListener(v -> saveEntry());
   }
 
-  // If the system is killing the app for memory and a hexagram has
-  // already been added, just save the entry and kill the activity
   @Override
   protected void onSaveInstanceState(@NonNull final Bundle outState) {
     super.onSaveInstanceState(outState);
-//    if (partViews.get(0).getHexagrams() != null) {
-//      saveEntry();
-//    }
+    setPartsOnEntry();
+    outState.putSerializable("entry", entry);
+  }
+
+  @Override
+  protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+    final Object entryObj = savedInstanceState.get("entry");
+    if (entryObj != null) {
+      entry = (Entry) entryObj;
+      partViews.clear();
+      layout.removeAllViews();
+      // Populate the view with the parts from the entry in the saved instance
+      final List<EntryPart> parts = entry.getParts();
+      for (int i = 0; i < parts.size(); i++) {
+        final EntryPart part = parts.get(i);
+        final NewEntryPartView partView = new NewEntryPartView(this);
+        partViews.add(partView);
+        layout.addView(partView);
+        partView.getTextEditText().setText(part.getText());
+        // Only set the HexagramsSetListener on the last part, otherwise too many parts get added
+        if (i == parts.size() - 1) {
+          partView.setHexagramsSetListener(() -> {
+            addPart();
+            saveButton.setVisibility(View.VISIBLE);
+          });
+        }
+        if (part.getHexagram() != null) {
+          partView.setHexagrams(part.getHexagram(), part.getSecondHexagram());
+        }
+      }
+    }
   }
 
   private void addPart() {
@@ -71,14 +97,19 @@ public class NewEntryActivity extends AppCompatActivity {
 
   private void saveEntry() {
     final EntryDao entryDao = AppDatabase.getInstance(this).getEntryDao();
+    setPartsOnEntry();
+    final ExecutorService executor = Executors.newSingleThreadExecutor();
+    executor.execute(() -> entryDao.insertWithParts(entry));
+    finish();
+  }
+
+  private void setPartsOnEntry() {
+    entry.getParts().clear();
     for (int i = 0; i < partViews.size(); i++) {
       final NewEntryPartView partView = partViews.get(i);
       entry.getParts().add(new EntryPart(partView.getTextEditText().getText().toString(),
         partView.getHexagrams(), i));
     }
-    final ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.execute(() -> entryDao.insertWithParts(entry));
-    finish();
   }
 
   // Display a confirm dialog before exiting on back-press

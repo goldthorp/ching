@@ -258,7 +258,7 @@ public class NewEntryPartView extends LinearLayout {
    * @param hexagramNumber       number for the first hexagram
    * @param secondHexagramNumber (optional) number for the second hexagram
    */
-  private void setHexagrams(
+  public void setHexagrams(
     final Integer hexagramNumber, final Integer secondHexagramNumber) {
     hexagrams = Pair.create(hexagramNumber, secondHexagramNumber);
     hexagramsView.setHexagrams(hexagramNumber, secondHexagramNumber);

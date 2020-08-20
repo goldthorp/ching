@@ -6,13 +6,15 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity(tableName = "entry-part")
-public class EntryPart {
+public class EntryPart implements Serializable {
   @PrimaryKey(autoGenerate = true)
   private Long id;
 
