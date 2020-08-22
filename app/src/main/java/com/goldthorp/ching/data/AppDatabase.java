@@ -17,7 +17,7 @@ import com.goldthorp.ching.model.EntryPart;
 
 import org.apache.commons.lang3.StringUtils;
 
-@Database(entities = {Entry.class, EntryPart.class}, version = 2, exportSchema = false)
+@Database(entities = {Entry.class, EntryPart.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
   private static AppDatabase INSTANCE;
@@ -31,6 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
     if (INSTANCE == null) {
       INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, dbName)
         .addMigrations(MIGRATION_1_2)
+        .addMigrations(MIGRATION_2_3)
         .build();
     }
     return INSTANCE;
@@ -75,6 +76,16 @@ public abstract class AppDatabase extends RoomDatabase {
       database.execSQL("INSERT INTO `entry_1` SELECT `id`, `timestamp` FROM `entry`");
       database.execSQL("DROP TABLE `entry`");
       database.execSQL("ALTER TABLE `entry_1` RENAME TO `entry`");
+    }
+  };
+
+  /**
+   * Add the is_draft column (boolean) so entries can be saved as drafts and finished later.
+   */
+  private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+    @Override
+    public void migrate(@NonNull final SupportSQLiteDatabase database) {
+      database.execSQL("ALTER TABLE `entry` ADD COLUMN `is_draft` INTEGER NOT NULL DEFAULT 0");
     }
   };
 }

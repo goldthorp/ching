@@ -10,10 +10,12 @@ import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Entity(tableName = "entry-part")
+@ToString
 public class EntryPart implements Serializable {
   @PrimaryKey(autoGenerate = true)
   private Long id;

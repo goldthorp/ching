@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -17,6 +18,7 @@ import com.goldthorp.ching.R;
 import com.goldthorp.ching.data.AppDatabase;
 import com.goldthorp.ching.data.EntryDao;
 import com.goldthorp.ching.model.Entry;
+import com.goldthorp.ching.util.BackgroundUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -71,6 +73,20 @@ public class EntryListFragment extends Fragment {
         EntryListFragmentDirections.actionEntryListFragmentToViewEntryFragment(entry.getId(),
           sdf.format(entry.getTimestamp()));
       Navigation.findNavController(root).navigate(action);
+    });
+
+    BackgroundUtil.doInBackground(entryDao::getDraftCount).then(count -> {
+      if (count > 0) {
+        final Intent intent = new Intent(requireContext(), NewEntryActivity.class);
+        if (count > 1) {
+          new AlertDialog.Builder(requireContext())
+            .setMessage(count + " draft entries found")
+            .setPositiveButton("ok", (dialog, which) -> startActivity(intent))
+            .show();
+        } else {
+          startActivity(intent);
+        }
+      }
     });
 
     return root;

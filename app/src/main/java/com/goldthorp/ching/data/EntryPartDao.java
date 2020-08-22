@@ -11,8 +11,11 @@ import java.util.List;
 @Dao
 public interface EntryPartDao {
   @Insert
-  void insert(EntryPart cast);
+  long insert(EntryPart part);
 
   @Query("SELECT * FROM `entry-part` WHERE entry_fk = :entryId ORDER BY list_seq ASC")
   List<EntryPart> getByEntryId(long entryId);
+
+  @Query("DELETE FROM `entry-part` WHERE entry_fk = :entryId")
+  void deleteByEntryId(long entryId);
 }
