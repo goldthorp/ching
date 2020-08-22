@@ -67,6 +67,7 @@ public class NewEntryPartView extends LinearLayout {
       .setView(dialogLayout).create();
 
     addHexagrams.setOnClickListener(v -> {
+      hideKeyboard();
       addDialog.show();
     });
 
@@ -79,7 +80,6 @@ public class NewEntryPartView extends LinearLayout {
     final AlertDialog generateHexagramDialog = getGenerateHexagramDialog();
     addHexagramsThrowButton.setOnClickListener(v -> {
       addDialog.dismiss();
-      hideKeyboard();
       generateHexagramDialog.show();
     });
   }
@@ -151,6 +151,11 @@ public class NewEntryPartView extends LinearLayout {
         // Close dialog
         dialog.dismiss();
       });
+      // Focus the first hexagram input and show the keyboard
+      hexagramEditText.requestFocus();
+      final InputMethodManager imm =
+        (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+      imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     });
 
     setHexagramsDialog.setOnDismissListener(v -> {
