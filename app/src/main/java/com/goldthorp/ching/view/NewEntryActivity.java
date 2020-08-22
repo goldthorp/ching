@@ -2,8 +2,8 @@ package com.goldthorp.ching.view;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,7 +29,7 @@ public class NewEntryActivity extends AppCompatActivity {
   private Entry entry;
 
   private LinearLayout layout;
-  private Button saveButton;
+  private MenuItem saveMenuItem;
 
   private final List<NewEntryPartView> partViews = new ArrayList<>();
 
@@ -43,9 +43,6 @@ public class NewEntryActivity extends AppCompatActivity {
     entryDao = AppDatabase.getInstance(this).getEntryDao();
 
     layout = findViewById(R.id.layout);
-
-    // Button to save entry (gets added after hexagrams are added)
-    saveButton = findViewById(R.id.save_entry_button);
 
     // Check if there's a draft saved and if so restore it instead of creating a new entry
     BackgroundUtil.doInBackground(entryDao::getDraft).then(draftEntry -> {
@@ -66,8 +63,6 @@ public class NewEntryActivity extends AppCompatActivity {
           });
       }
     });
-    // Save entry on save click then kill the activity
-    saveButton.setOnClickListener(v -> saveEntry());
   }
 
   @Override
@@ -78,6 +73,22 @@ public class NewEntryActivity extends AppCompatActivity {
     if (!isFinishing()) {
       performSave(true);
     }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(final Menu menu) {
+    getMenuInflater().inflate(R.menu.new_entry_menu, menu);
+    saveMenuItem = menu.getItem(0);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(final MenuItem item) {
+    if (item.getItemId() == saveMenuItem.getItemId()) {
+      // Save entry on save click then kill the activity
+      saveEntry();
+    }
+    return true;
   }
 
   /**
@@ -97,7 +108,7 @@ public class NewEntryActivity extends AppCompatActivity {
       }
       if (part.getHexagram() != null) {
         partView.setHexagrams(part.getHexagram(), part.getSecondHexagram());
-        saveButton.setVisibility(View.VISIBLE);
+        saveMenuItem.setVisible(true);
       }
     }
   }
@@ -111,7 +122,7 @@ public class NewEntryActivity extends AppCompatActivity {
     layout.addView(partView);
     partView.setHexagramsSetListener(() -> {
       addPart();
-      saveButton.setVisibility(View.VISIBLE);
+      saveMenuItem.setVisible(true);
     });
   }
 
