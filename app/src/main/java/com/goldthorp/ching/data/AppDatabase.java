@@ -17,7 +17,7 @@ import com.goldthorp.ching.model.EntryPart;
 
 import org.apache.commons.lang3.StringUtils;
 
-@Database(entities = {Entry.class, EntryPart.class}, version = 3, exportSchema = false)
+@Database(entities = {Entry.class, EntryPart.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
   private static AppDatabase INSTANCE;
@@ -32,6 +32,7 @@ public abstract class AppDatabase extends RoomDatabase {
       INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, dbName)
         .addMigrations(MIGRATION_1_2)
         .addMigrations(MIGRATION_2_3)
+        .addMigrations(MIGRATION_3_4)
         .build();
     }
     return INSTANCE;
@@ -86,6 +87,16 @@ public abstract class AppDatabase extends RoomDatabase {
     @Override
     public void migrate(@NonNull final SupportSQLiteDatabase database) {
       database.execSQL("ALTER TABLE `entry` ADD COLUMN `is_draft` INTEGER NOT NULL DEFAULT 0");
+    }
+  };
+
+  /**
+   * Clean up entry parts that should not have been saved since they have no content.
+   */
+  private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+    @Override
+    public void migrate(@NonNull final SupportSQLiteDatabase database) {
+      database.execSQL("DELETE FROM `entry-part` WHERE text = '' AND hexagram IS NULL");
     }
   };
 }

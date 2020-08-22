@@ -17,6 +17,8 @@ import com.goldthorp.ching.model.Entry;
 import com.goldthorp.ching.model.EntryPart;
 import com.goldthorp.ching.util.BackgroundUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,7 +133,10 @@ public class NewEntryActivity extends AppCompatActivity {
   private void setPartsOnEntry() {
     entry.getParts().clear();
     for (final NewEntryPartView partView : partViews) {
-      entry.addPart(partView.getTextEditText().getText().toString(), partView.getHexagrams());
+      final String text = partView.getTextEditText().getText().toString();
+      if (StringUtils.isNotBlank(text) || partView.getHexagrams() != null) {
+        entry.addPart(partView.getTextEditText().getText().toString(), partView.getHexagrams());
+      }
     }
   }
 
