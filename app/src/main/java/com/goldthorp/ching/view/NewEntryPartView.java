@@ -84,6 +84,12 @@ public class NewEntryPartView extends LinearLayout {
     });
   }
 
+  public NewEntryPartView(final Context context,
+                          final HexagramView.HexagramClickListener hexagramClickListener) {
+    this(context);
+    hexagramsView.setHexagramClickListener(hexagramClickListener);
+  }
+
   /**
    * Sets up ability to manually set the hexagrams.
    */

@@ -1,5 +1,6 @@
 package com.goldthorp.ching.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.goldthorp.ching.data.EntryPartDao;
 import com.goldthorp.ching.model.EntryPart;
 import com.goldthorp.ching.util.BackgroundUtil;
 
-public class ViewEntryFragment extends Fragment {
+public class ViewEntryFragment extends Fragment implements HexagramView.HexagramClickListener {
   @Nullable
   @Override
   public View onCreateView(
@@ -31,10 +32,17 @@ public class ViewEntryFragment extends Fragment {
     BackgroundUtil.doInBackground(() -> entryPartDao.getByEntryId(args.getEntryId()))
       .then(parts -> {
         for (final EntryPart part : parts) {
-          layout.addView(new EntryPartView(requireContext(), part));
+          layout.addView(new EntryPartView(requireContext(), part, this));
         }
       });
 
     return root;
+  }
+
+  @Override
+  public void onClick(final int hexagram) {
+    final Intent intent = new Intent(requireContext(), HexagramInfoActivity.class);
+    intent.putExtra("hexagram", hexagram);
+    startActivity(intent);
   }
 }

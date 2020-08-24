@@ -1,5 +1,6 @@
 package com.goldthorp.ching.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,7 +23,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewEntryActivity extends AppCompatActivity {
+public class NewEntryActivity extends AppCompatActivity
+  implements HexagramView.HexagramClickListener {
 
   private EntryDao entryDao;
 
@@ -98,7 +100,7 @@ public class NewEntryActivity extends AppCompatActivity {
     final List<EntryPart> parts = entry.getParts();
     for (int i = 0; i < parts.size(); i++) {
       final EntryPart part = parts.get(i);
-      final NewEntryPartView partView = new NewEntryPartView(this);
+      final NewEntryPartView partView = new NewEntryPartView(this, this);
       partViews.add(partView);
       layout.addView(partView);
       partView.getTextEditText().setText(part.getText());
@@ -117,7 +119,7 @@ public class NewEntryActivity extends AppCompatActivity {
    * Add a new part to the view.
    */
   private void addPart() {
-    final NewEntryPartView partView = new NewEntryPartView(this);
+    final NewEntryPartView partView = new NewEntryPartView(this, this);
     partViews.add(partView);
     layout.addView(partView);
     partView.setHexagramsSetListener(() -> {
@@ -167,5 +169,12 @@ public class NewEntryActivity extends AppCompatActivity {
       })
       .setNegativeButton("No", null)
       .show();
+  }
+
+  @Override
+  public void onClick(final int hexagram) {
+    final Intent intent = new Intent(this, HexagramInfoActivity.class);
+    intent.putExtra("hexagram", hexagram);
+    startActivity(intent);
   }
 }

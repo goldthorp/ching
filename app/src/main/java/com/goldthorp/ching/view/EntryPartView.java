@@ -19,10 +19,12 @@ public class EntryPartView extends LinearLayout {
     hexagramsView = findViewById(R.id.hexagrams_view);
   }
 
-  public EntryPartView(final Context context, final EntryPart entryPart) {
+  public EntryPartView(final Context context, final EntryPart entryPart,
+                       final HexagramView.HexagramClickListener hexagramClickListener) {
     this(context);
     textView.setText(entryPart.getText());
     if (entryPart.getHexagram() != null) {
+      hexagramsView.setHexagramClickListener(hexagramClickListener);
       hexagramsView.setHexagrams(entryPart.getHexagram(), entryPart.getSecondHexagram());
     }
   }

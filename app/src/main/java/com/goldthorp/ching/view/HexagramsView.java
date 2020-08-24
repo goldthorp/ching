@@ -12,11 +12,16 @@ import com.goldthorp.ching.R;
 import com.goldthorp.ching.model.Hexagram;
 import com.goldthorp.ching.util.Index;
 
+import lombok.Setter;
+
 /**
  * Represents a view with one or two hexagrams. If two, show an arrow between them pointing from
  * the first to the second.
  */
 public class HexagramsView extends LinearLayout {
+
+  @Setter
+  private HexagramView.HexagramClickListener hexagramClickListener;
 
   public HexagramsView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
@@ -28,10 +33,6 @@ public class HexagramsView extends LinearLayout {
       getResources().getDimensionPixelSize(R.dimen.hexagrams_height)));
   }
 
-  public HexagramsView(final Context context) {
-    this(context, null);
-  }
-
   /**
    * Set the hexagrams in the view.
    *
@@ -41,6 +42,11 @@ public class HexagramsView extends LinearLayout {
   public void setHexagrams(final Integer hexagramNumber, final Integer secondHexagramNumber) {
     // Remove all views in case we are changing the hexagrams that have already been added
     removeAllViews();
+
+    if (hexagramClickListener == null) {
+      throw new IllegalStateException(
+        "Must specify a hexagram click listener before adding hexagrams");
+    }
 
     final Pair<Hexagram, Hexagram> hexagrams =
       Index.getHexagrams(hexagramNumber, secondHexagramNumber);
@@ -77,9 +83,9 @@ public class HexagramsView extends LinearLayout {
 
     final LayoutParams hex1Params =
       new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 5);
-    final HexagramView hexagram1 = new HexagramView(getContext(), hexagram);
-    hexagram1.setLayoutParams(hex1Params);
-    addView(hexagram1, hexagramIndex);
+    final HexagramView hexagram1View = new HexagramView(getContext(), hexagram, hexagramClickListener);
+    hexagram1View.setLayoutParams(hex1Params);
+    addView(hexagram1View, hexagramIndex);
   }
 
   /**
@@ -96,9 +102,9 @@ public class HexagramsView extends LinearLayout {
     arrow.setPadding(arrowPaddingPx, 0, arrowPaddingPx, 0);
     addView(arrow);
 
-    final HexagramView hexagram2 = new HexagramView(getContext(), hexagram);
+    final HexagramView hexagram2View = new HexagramView(getContext(), hexagram, hexagramClickListener);
     final LayoutParams hex2Params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 5);
-    hexagram2.setLayoutParams(hex2Params);
-    addView(hexagram2);
+    hexagram2View.setLayoutParams(hex2Params);
+    addView(hexagram2View);
   }
 }

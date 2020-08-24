@@ -14,11 +14,13 @@ public class Index {
    */
   public static Pair<Hexagram, Hexagram> getHexagrams(
     final Integer firstHexagramNumber, final Integer secondHexagramNumber) {
-    final Hexagram firstHexagram = new Hexagram(HEXAGRAMS[firstHexagramNumber - 1]);
+    final Hexagram firstHexagram =
+      new Hexagram(HEXAGRAMS[firstHexagramNumber - 1], firstHexagramNumber);
     if (secondHexagramNumber == null) {
       return Pair.create(firstHexagram, null);
     }
-    final Hexagram secondHexagram = new Hexagram(HEXAGRAMS[secondHexagramNumber - 1]);
+    final Hexagram secondHexagram =
+      new Hexagram(HEXAGRAMS[secondHexagramNumber - 1], secondHexagramNumber);
     for (int i = 0; i < firstHexagram.getLines().length; i++) {
       final Hexagram.Line hex1Line = firstHexagram.getLines()[i];
       final Hexagram.Line hex2Line = secondHexagram.getLines()[i];

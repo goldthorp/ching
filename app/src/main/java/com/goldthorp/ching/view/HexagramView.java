@@ -31,15 +31,31 @@ public class HexagramView extends LinearLayout {
     }
   }
 
-  public HexagramView(final Context context, final Hexagram hexagram) {
+  public HexagramView(final Context context, final Hexagram hexagram,
+                      final HexagramClickListener hexagramClickListener) {
     super(context);
     setOrientation(VERTICAL);
     lineViews = new ArrayList<>();
-    // Add the lineViews to the view for each lineViews in the hexagram
-    // These are added from the bottom up
+    setHexagram(hexagram);
+    if (hexagramClickListener == null) {
+      throw new IllegalArgumentException("Hexagram click listener must be specified");
+    }
+    setOnClickListener(v -> hexagramClickListener.onClick(hexagram.getHexagramNumber()));
+  }
+
+  /**
+   * Add the lineViews to the view for each line in the hexagram.
+   * These are added from the bottom up.
+   *
+   * @param hexagram lines to set
+   */
+  public void setHexagram(final Hexagram hexagram) {
+    // Clear and remove views first since blank ones may have been added by the constructor
+    lineViews.clear();
+    removeAllViews();
     for (int i = 0; i < hexagram.getLines().length; i++) {
       final Hexagram.Line line = hexagram.getLines()[i];
-      final LineView lineView = new LineView(context, line);
+      final LineView lineView = new LineView(getContext(), line);
       // Remove bottom margin from bottom line
       if (i == 0) {
         ((MarginLayoutParams) lineView.getLayoutParams()).bottomMargin = 0;
@@ -52,5 +68,9 @@ public class HexagramView extends LinearLayout {
     lineViews.add(line);
     // Pass 0 for index since we're adding lineViews from the bottom up
     super.addView(line, 0);
+  }
+
+  public interface HexagramClickListener {
+    void onClick(int hexagram);
   }
 }
