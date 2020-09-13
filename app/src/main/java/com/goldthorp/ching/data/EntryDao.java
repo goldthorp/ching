@@ -39,6 +39,12 @@ public abstract class EntryDao {
   @Delete
   public abstract void delete(Entry entry);
 
+  @Query("DELETE FROM entry")
+  abstract void deleteAll();
+
+  @Insert
+  abstract void insertAll(List<Entry> entries);
+
   /**
    * Delete an entry and all its parts.
    *

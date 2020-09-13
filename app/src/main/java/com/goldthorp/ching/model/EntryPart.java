@@ -6,16 +6,23 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.goldthorp.annotation.BackupEntity;
+
 import java.io.Serializable;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @Entity(tableName = "entry-part")
+@BackupEntity(name = "entry-part")
 @ToString
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"entryId", "listSeq"})
 public class EntryPart implements Serializable {
   @PrimaryKey(autoGenerate = true)
   private Long id;

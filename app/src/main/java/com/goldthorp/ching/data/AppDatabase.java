@@ -26,6 +26,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
   public abstract EntryPartDao getEntryPartDao();
 
+  public abstract BackupEntityGeneratedDao getBackupEntityGeneratedDao();
+
   public static synchronized AppDatabase getInstance(final Context context) {
     final String dbName = "ching.db";
     if (INSTANCE == null) {

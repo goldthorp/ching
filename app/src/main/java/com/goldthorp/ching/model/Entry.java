@@ -7,10 +7,13 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.goldthorp.annotation.BackupEntity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +21,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity(tableName = "entry")
+@BackupEntity(name = "entry")
 @ToString
+@EqualsAndHashCode(exclude = {"parts", "isDraft"})
 public class Entry implements Comparable<Entry>, Serializable {
   @PrimaryKey(autoGenerate = true)
   private Long id;

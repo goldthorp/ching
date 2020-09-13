@@ -13,4 +13,6 @@
     <string name="entries_label">Entries</string>
     <string name="throw_hexagram">Throw Hexagram</string>
     <string name="add_a_cast">Add a Cast</string>
+    <string name="backup_failed">Backup failed</string>
+    <string name="restore_backup">Restore backup</string>
 </resources>
