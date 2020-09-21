@@ -67,9 +67,6 @@ public class BackupUtil {
   /**
    * Backs up the logged in user's local database to the remote firebase database.
    *
-   * This will subscribe to all DAO methods annotated with @Backup and back up the data there
-   * whenever it changes. These methods must return a LiveData<List<?>>.
-   *
    * Will only ever add data to the backup, never remove. This is done by reading the remote
    * database first and checking that all the entries there are present locally (i.e. we check
    * that the remote entries list is a subset of the local entries list). Any entries that are
